@@ -1,0 +1,111 @@
+name: Deploy Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [ main, develop ]
+
+env:
+  NODE_VERSION: '18.x'
+
+jobs:
+  deploy-preview-frontend:
+    name: Deploy Frontend Preview
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+    
+    - name: Install frontend dependencies
+      working-directory: ./frontend
+      run: npm ci
+    
+    - name: Build frontend
+      working-directory: ./frontend
+      run: npm run build
+      env:
+        VITE_API_BASE_URL: ${{ secrets.PREVIEW_API_URL || secrets.VITE_API_BASE_URL }}
+        VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN_FRONTEND }}
+    
+    # Option 1: Deploy to Vercel
+    - name: Deploy to Vercel Preview
+      if: secrets.VERCEL_TOKEN != ''
+      working-directory: ./frontend
+      run: |
+        npm install -g vercel
+        vercel deploy --token=${{ secrets.VERCEL_TOKEN }} \
+          --build-env VITE_API_BASE_URL=${{ secrets.PREVIEW_API_URL }} \
+          --build-env VITE_SENTRY_DSN=${{ secrets.SENTRY_DSN_FRONTEND }} \
+          > deployment-url.txt
+        echo "PREVIEW_URL=$(cat deployment-url.txt)" >> $GITHUB_ENV
+      continue-on-error: true
+    
+    # Option 2: Deploy to Netlify (alternative)
+    - name: Deploy to Netlify Preview
+      if: secrets.NETLIFY_AUTH_TOKEN != '' && secrets.NETLIFY_SITE_ID != ''
+      uses: nwtgck/actions-netlify@v2.0
+      with:
+        publish-dir: './frontend/dist'
+        production-deploy: false
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        deploy-message: "Deploy from GitHub Actions - PR #${{ github.event.number }}"
+        enable-pull-request-comment: true
+        enable-commit-comment: false
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      continue-on-error: true
+    
+    - name: Comment Preview URL on PR
+      if: env.PREVIEW_URL != ''
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '🚀 **Preview Deployment Ready!**\n\n' +
+                  '**Frontend Preview:** ' + process.env.PREVIEW_URL + '\n\n' +
+                  '**Branch:** `' + context.payload.pull_request.head.ref + '`\n' +
+                  '**Commit:** ' + context.sha.substring(0, 7)
+          })
+
+  deploy-preview-backend:
+    name: Deploy Backend Preview (Render)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && secrets.RENDER_DEPLOY_HOOK != ''
+    
+    steps:
+    - name: Trigger Render Preview Deploy
+      run: |
+        curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}" \
+          -H "Content-Type: application/json" \
+          -d '{"branch":"${{ github.head_ref }}"}'
+    
+    - name: Wait for deployment (optional)
+      run: sleep 30
+    
+    - name: Comment on PR
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '🔧 **Backend Preview Deployment Triggered**\n\n' +
+                  'Check [Render Dashboard](https://dashboard.render.com) for deployment status.\n\n' +
+                  '**Branch:** `' + context.payload.pull_request.head.ref + '`'
+          })

@@ -1,0 +1,97 @@
+# Render Blueprint for InvestAgent Backend
+# Upload this file to your Render project or use it as reference
+
+services:
+  - type: web
+    name: investagent-backend
+    env: node
+    rootDir: backend
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: npm install
+    startCommand: node src/index.js
+    healthCheckPath: /health
+    
+    envVars:
+      - key: NODE_ENV
+        value: production
+      
+      - key: PORT
+        value: 5000
+      
+      - key: JWT_SECRET
+        generateValue: true # Render will generate a secure random value
+      
+      - key: JWT_EXPIRE
+        value: 7d
+      
+      - key: MONGODB_URI
+        sync: false # Set this manually in Render dashboard (MongoDB Atlas connection string)
+      
+      - key: OPENAI_API_KEY
+        sync: false # Set this manually in Render dashboard
+      
+      - key: PINECONE_API_KEY
+        sync: false # Set this manually in Render dashboard
+      
+      - key: PINECONE_ENVIRONMENT
+        sync: false # e.g., us-west1-gcp
+      
+      - key: PINECONE_INDEX_NAME
+        value: investagent-vectors
+      
+      - key: GOOGLE_CLIENT_ID
+        sync: false # Set this manually in Render dashboard
+      
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false # Set this manually in Render dashboard
+      
+      - key: PLAID_CLIENT_ID
+        sync: false # Set this manually in Render dashboard
+      
+      - key: PLAID_SECRET
+        sync: false # Set this manually in Render dashboard
+      
+      - key: PLAID_ENV
+        value: sandbox # Change to 'development' or 'production' when ready
+      
+      - key: ALPHA_VANTAGE_API_KEY
+        sync: false # Set this manually in Render dashboard
+      
+      - key: FINNHUB_API_KEY
+        sync: false # Set this manually in Render dashboard
+      
+      - key: FRONTEND_URL
+        value: https://investagent.vercel.app # Update with your Vercel URL
+      
+      - key: SENTRY_DSN_BACKEND
+        sync: false # Set this manually in Render dashboard
+      
+      - key: EMAIL_SERVICE
+        value: gmail
+      
+      - key: EMAIL_USER
+        sync: false # Set this manually in Render dashboard
+      
+      - key: EMAIL_PASSWORD
+        sync: false # Set this manually in Render dashboard (use App Password for Gmail)
+      
+      - key: LOG_LEVEL
+        value: info
+
+# Alternative manual configuration for Render Dashboard:
+# 1. Go to https://dashboard.render.com
+# 2. Click "New +" -> "Web Service"
+# 3. Connect your GitHub repository
+# 4. Configure:
+#    - Name: investagent-backend
+#    - Region: Oregon (or preferred)
+#    - Branch: main
+#    - Root Directory: backend (if monorepo)
+#    - Environment: Node
+#    - Build Command: npm ci
+#    - Start Command: npm start
+#    - Plan: Starter (free) or Standard ($7/mo)
+# 5. Add environment variables from the list above
+# 6. Click "Create Web Service"
