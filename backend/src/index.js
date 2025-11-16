@@ -43,23 +43,33 @@ app.use(cors({
     // Allow requests with no origin (like mobile apps, curl, postman)
     if (!origin) return callback(null, true);
     
-    // Allow localhost on any port for development
-    if (origin.match(/^http:\/\/localhost:\d+$/)) {
+    // Allowed origins
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://localhost:3002',
+      'http://localhost:3003',
+      'https://ai-invest-agent-client.vercel.app',
+      process.env.FRONTEND_URL
+    ].filter(Boolean);
+    
+    // Check if origin is allowed
+    if (allowedOrigins.includes(origin) || origin.match(/^http:\/\/localhost:\d+$/)) {
       return callback(null, true);
     }
     
-    // Allow specific frontend URL if set
-    if (process.env.FRONTEND_URL && origin === process.env.FRONTEND_URL) {
+    // Allow Vercel preview deployments
+    if (origin && origin.includes('.vercel.app')) {
       return callback(null, true);
     }
     
-    // In production, only allow specific origins
-    if (process.env.NODE_ENV === 'production') {
-      return callback(new Error('Not allowed by CORS'));
+    // In development, allow all
+    if (process.env.NODE_ENV === 'development') {
+      return callback(null, true);
     }
     
-    // Allow all in development
-    callback(null, true);
+    // Reject others in production
+    callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
 }));
