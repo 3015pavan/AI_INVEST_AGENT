@@ -265,28 +265,31 @@ Key Opportunities:
   );
 }
 
+const isMobile = window.innerWidth <= 768;
+
 const styles = {
   container: {
-    padding: '30px',
+    padding: isMobile ? '16px' : '30px',
     maxWidth: '1400px',
   },
   header: {
-    marginBottom: '30px',
+    marginBottom: isMobile ? '20px' : '30px',
   },
   title: {
-    fontSize: '28px',
+    fontSize: isMobile ? '22px' : '28px',
     fontWeight: '700',
     color: '#fff',
     marginBottom: '8px',
   },
   subtitle: {
-    fontSize: '14px',
+    fontSize: isMobile ? '13px' : '14px',
     color: '#9ca3af',
   },
   searchSection: {
     display: 'flex',
-    gap: '16px',
-    marginBottom: '30px',
+    flexDirection: isMobile ? 'column' : 'row',
+    gap: isMobile ? '12px' : '16px',
+    marginBottom: isMobile ? '20px' : '30px',
   },
   searchBar: {
     flex: 1,
@@ -294,8 +297,8 @@ const styles = {
     alignItems: 'center',
     background: '#1a2332',
     border: '1px solid #374151',
-    borderRadius: '12px',
-    padding: '0 20px',
+    borderRadius: isMobile ? '10px' : '12px',
+    padding: isMobile ? '0 16px' : '0 20px',
   },
   searchIcon: {
     fontSize: '20px',
@@ -307,37 +310,41 @@ const styles = {
     border: 'none',
     outline: 'none',
     color: '#fff',
-    fontSize: '15px',
-    padding: '16px 0',
+    fontSize: isMobile ? '14px' : '15px',
+    padding: isMobile ? '14px 0' : '16px 0',
+    minHeight: '44px',
   },
   analyzeButton: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: '8px',
-    padding: '16px 32px',
+    padding: isMobile ? '14px 24px' : '16px 32px',
     background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
     border: 'none',
-    borderRadius: '12px',
-    fontSize: '15px',
+    borderRadius: isMobile ? '10px' : '12px',
+    fontSize: isMobile ? '14px' : '15px',
     fontWeight: '600',
     color: '#fff',
     cursor: 'pointer',
     boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
     whiteSpace: 'nowrap',
+    minHeight: '44px',
+    width: isMobile ? '100%' : 'auto',
   },
   buttonIcon: {
-    fontSize: '18px',
+    fontSize: isMobile ? '16px' : '18px',
   },
   contentGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
-    gap: '24px',
-    marginBottom: '24px',
+    gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(500px, 1fr))',
+    gap: isMobile ? '16px' : '24px',
+    marginBottom: isMobile ? '16px' : '24px',
   },
   card: {
     background: '#1a2332',
-    borderRadius: '12px',
-    padding: '30px',
+    borderRadius: isMobile ? '10px' : '12px',
+    padding: isMobile ? '20px' : '30px',
     border: '1px solid #242d3d',
   },
   cardHeader: {

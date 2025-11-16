@@ -384,72 +384,79 @@ function GoalsPage() {
   );
 }
 
+const isMobile = window.innerWidth <= 768;
+
 const styles = {
   container: {
-    padding: '30px',
+    padding: isMobile ? '16px' : '30px',
     maxWidth: '1400px',
   },
   header: {
     display: 'flex',
+    flexDirection: isMobile ? 'column' : 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: '30px',
+    alignItems: isMobile ? 'flex-start' : 'flex-start',
+    marginBottom: isMobile ? '20px' : '30px',
+    gap: isMobile ? '16px' : '0',
   },
   title: {
-    fontSize: '28px',
+    fontSize: isMobile ? '22px' : '28px',
     fontWeight: '700',
     color: '#fff',
     marginBottom: '8px',
   },
   subtitle: {
-    fontSize: '14px',
+    fontSize: isMobile ? '13px' : '14px',
     color: '#9ca3af',
   },
   createButton: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: '8px',
-    padding: '12px 24px',
+    padding: isMobile ? '10px 20px' : '12px 24px',
     background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
     border: 'none',
-    borderRadius: '10px',
-    fontSize: '15px',
+    borderRadius: isMobile ? '8px' : '10px',
+    fontSize: isMobile ? '14px' : '15px',
     fontWeight: '600',
     color: '#fff',
     cursor: 'pointer',
     boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
+    minHeight: '44px',
+    width: isMobile ? '100%' : 'auto',
   },
   buttonIcon: {
-    fontSize: '16px',
+    fontSize: isMobile ? '14px' : '16px',
   },
   summaryGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-    gap: '20px',
-    marginBottom: '30px',
+    gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(240px, 1fr))',
+    gap: isMobile ? '12px' : '20px',
+    marginBottom: isMobile ? '20px' : '30px',
   },
   summaryCard: {
     background: '#1a2332',
-    borderRadius: '12px',
-    padding: '24px',
+    borderRadius: isMobile ? '10px' : '12px',
+    padding: isMobile ? '20px' : '24px',
     display: 'flex',
     alignItems: 'center',
-    gap: '16px',
+    gap: isMobile ? '12px' : '16px',
     border: '1px solid #242d3d',
   },
   summaryIcon: {
-    fontSize: '36px',
+    fontSize: isMobile ? '30px' : '36px',
   },
   summaryContent: {
     flex: 1,
   },
   summaryLabel: {
-    fontSize: '13px',
+    fontSize: isMobile ? '12px' : '13px',
     color: '#9ca3af',
     marginBottom: '4px',
   },
   summaryValue: {
-    fontSize: '24px',
+    fontSize: isMobile ? '20px' : '24px',
     fontWeight: '700',
     color: '#fff',
   },

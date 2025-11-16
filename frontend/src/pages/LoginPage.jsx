@@ -205,6 +205,8 @@ const handleGoogleResponse = useCallback(async (response) => {
   );
 }
 
+const isMobile = window.innerWidth <= 768;
+
 const styles = {
   container: {
     minHeight: '100vh',
@@ -212,21 +214,21 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    padding: '20px',
+    padding: isMobile ? '12px' : '20px',
     position: 'relative',
   },
   backLink: {
     position: 'absolute',
-    top: '20px',
-    left: '20px',
+    top: isMobile ? '12px' : '20px',
+    left: isMobile ? '12px' : '20px',
     color: 'white',
     textDecoration: 'none',
-    fontSize: '16px',
+    fontSize: isMobile ? '14px' : '16px',
     fontWeight: '500',
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
-    padding: '10px 20px',
+    padding: isMobile ? '8px 16px' : '10px 20px',
     borderRadius: '8px',
     background: 'rgba(255, 255, 255, 0.1)',
     backdropFilter: 'blur(10px)',
@@ -234,14 +236,14 @@ const styles = {
   },
   card: {
     backgroundColor: 'white',
-    padding: '2.5rem',
-    borderRadius: '16px',
+    padding: isMobile ? '1.5rem' : '2.5rem',
+    borderRadius: isMobile ? '12px' : '16px',
     boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
     width: '100%',
     maxWidth: '440px',
   },
   title: {
-    fontSize: '2rem',
+    fontSize: isMobile ? '1.5rem' : '2rem',
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: '0.5rem',
@@ -263,17 +265,18 @@ const styles = {
   form: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '1rem',
+    gap: isMobile ? '0.75rem' : '1rem',
   },
   input: {
-    padding: '0.75rem',
-    fontSize: '1rem',
+    padding: isMobile ? '0.65rem' : '0.75rem',
+    fontSize: isMobile ? '16px' : '1rem',
     border: '1px solid #ddd',
     borderRadius: '8px',
+    minHeight: '44px',
   },
   button: {
-    padding: '0.75rem',
-    fontSize: '1rem',
+    padding: isMobile ? '0.75rem' : '0.85rem',
+    fontSize: isMobile ? '0.95rem' : '1rem',
     backgroundColor: '#667eea',
     color: 'white',
     border: 'none',
@@ -281,6 +284,7 @@ const styles = {
     cursor: 'pointer',
     fontWeight: '600',
     transition: 'background 0.3s ease',
+    minHeight: '44px',
   },
   divider: {
     position: 'relative',
@@ -301,11 +305,12 @@ const styles = {
   },
   googleButton: {
     width: '100%',
-    padding: '14px',
+    padding: isMobile ? '12px' : '14px',
     border: '1px solid #dadce0',
     borderRadius: '8px',
     background: 'white',
     color: '#3c4043',
+    minHeight: '44px',
     fontSize: '16px',
     fontWeight: '500',
     cursor: 'pointer',
