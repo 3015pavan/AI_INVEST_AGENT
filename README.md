@@ -349,14 +349,3 @@ VITE_ENABLE_AI_RECOMMENDATIONS=true
 ```
 
 ---
-
-# 13. Future Improvements
-
-- Ship complete frontend app source with production UX flows.
-- Expose RAG as first-class API endpoints with ingestion and query controls.
-- Add transaction APIs and reconciliation logic across holdings/portfolio history.
-- Add caching and queueing for quote sync and AI orchestration at scale.
-- Strengthen security posture with rate limiting, audit trails, and stricter validation.
-- Expand observability with tracing dashboards and SLO-based alerts.
-
----
