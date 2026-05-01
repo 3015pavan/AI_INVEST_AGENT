@@ -270,22 +270,7 @@ npm test
 npm run test:coverage
 ```
 
----
-
-# 11. Screenshots / Demo
-
-Add these assets to showcase product quality:
-
-- `docs/screenshots/landing-page.png` - Add dashboard/landing screenshot here
-- `docs/screenshots/portfolio-overview.png` - Add portfolio list + totals screenshot here
-- `docs/screenshots/holding-sync.png` - Add market sync and P&L view screenshot here
-- `docs/screenshots/ai-plan.png` - Add generated allocation/trade recommendation screenshot here
-- `docs/screenshots/auth-flow.png` - Add signup/login/Google auth screenshot here
-- `docs/demo/user-journey.gif` - Add end-to-end demo GIF here
-
----
-
-# 12. Environment Variables
+# 11. Environment Variables
 
 ## Backend (core)
 
